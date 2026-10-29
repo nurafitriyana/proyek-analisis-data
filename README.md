@@ -9,11 +9,10 @@ Aplikasi interaktif dapat diakses melalui tautan berikut:
 
 ## Struktur Repositori
 ```text
-.
+
 ├── dashboard/
 │   └── dashboard.py
 │   └── requirements.txt
 ├── PRSA_Data_Nongzhanguan_20130301-20170228.csv
 ├── notebook.ipynb
-├── README.md
-└── 
+└── README.md

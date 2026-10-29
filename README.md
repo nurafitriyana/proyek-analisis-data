@@ -5,14 +5,15 @@ Proyek ini merupakan analisis data kualitas udara di Stasiun Nongzhanguan period
 
 ## Link Dashboard Streamlit
 Aplikasi interaktif dapat diakses melalui tautan berikut:
-👉 **[Air Quality Analytics Dashboard](https://<ganti-dengan-url-streamlit-anda>.streamlit.app)**
+👉 **[Air Quality Analytics Dashboard](https://vs899sp5cvk3odivzhsssu.streamlit.app/)**
 
 ## Struktur Repositori
 ```text
 .
 ├── dashboard/
 │   └── dashboard.py
+│   └── requirements.txt
 ├── PRSA_Data_Nongzhanguan_20130301-20170228.csv
 ├── notebook.ipynb
 ├── README.md
-└── requirements.txt
+└── 

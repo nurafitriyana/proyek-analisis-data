@@ -17,7 +17,7 @@ streamlit run dashboard/dashboard.py
 
 ├── dashboard/
 │   └── dashboard.py
-│   └── requirements.txt
 ├── PRSA_Data_Nongzhanguan_20130301-20170228.csv
-├── notebook.ipynb
-└── README.md
+├── Proyek_Analisis_Data_Nongzhanguan.ipynb
+├── README.md
+└── requirements.txt

@@ -7,6 +7,11 @@ Proyek ini merupakan analisis data kualitas udara di Stasiun Nongzhanguan period
 Aplikasi interaktif dapat diakses melalui tautan berikut:
 👉 **[Air Quality Analytics Dashboard](https://vs899sp5cvk3odivzhsssu.streamlit.app/)**
 
+
+## Panduan cara menjalankan aplikasi di lingkungan lokal:
+pip install -r requirements.txt
+streamlit run dashboard/dashboard.py
+
 ## Struktur Repositori
 ```text
 

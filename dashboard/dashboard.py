@@ -16,74 +16,8 @@ sns.set_theme(style="whitegrid")
 # Memuat data yang sudah dibersihkan (main_data.csv)
 @st.cache_data
 def load_data():
-    # Pastikan file main_data.csv berada di folder yang sesuai (misal: dashboard/main_data.csv)
-    df = pd.read_csv("dashboard/main_data.csv")
-    df['datetime'] = pd.to_datetime(df['datetime'])
-    return df
-
-df = load_data()
-
-# Sidebar: Filter Rentang Waktu
-st.sidebar.header("📍 Filter Data")
-min_date = df['datetime'].dt.date.min()
-max_date = df['datetime'].dt.date.max()
-
-# Mengambil input tanggal berupa tuple/list
-date_range = st.sidebar.date_input(
-    label="Pilih Rentang Tanggal:",
-    min_value=min_date,
-    max_value=max_date,
-    value=[min_date, max_date]
-)
-
-# Penanganan error unpacking: hanya memfilter jika 2 tanggal (start & end) sudah dipilih
-if len(date_range) == 2:
-    start_date, end_date = date_range
-else:
-    start_date = date_range[0]
-    end_date = max_date
-
-# Filter dataframe berdasarkan tanggal
-filtered_df = df[
-    (df['datetime'].dt.date >= start_date) & 
-    (df['datetime'].dt.date <= end_date)
-]
-
-# Header Dashboard
-st.title("🌤️ Air Quality Analytics Dashboard")
-st.Error pada pemilihan tanggal (*date input*) di Streamlit terjadi karena **masalah unpacking variabel pada tuple**.
-
-Ketika pengguna baru memilih tanggal pertama (tanggal mulai) di kalender Streamlit, fungsi `st.date_input` secara sementara mengembalikan *tuple* dengan **1 elemen** `(start_date,)`. Kode `start_date, end_date = st.date_input(...)` akan melempar error `ValueError: not enough values to unpack (expected 2, got 1)` sebelum pengguna sempat memilih tanggal kedua.
-
-Selain itu, untuk mengikuti praktik terbaik submission Dicoding, pembacaan data di dashboard sebaiknya langsung menggunakan **`main_data.csv`** (data yang sudah dibersihkan di notebook) agar proses *rendering* dashboard jauh lebih cepat.
-
----
-
-### Perbaikan Kode `dashboard.py`
-
-Berikut adalah kode lengkap `dashboard.py` yang sudah diperbaiki penanganan tanggalnya serta sudah disesuaikan untuk membaca berkas **`main_data.csv`**:
-
-```python
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-import streamlit as st
-
-# Konfigurasi Halaman Streamlit
-st.set_page_config(
-    page_title="Air Quality Dashboard - Nongzhanguan",
-    page_icon="🌤️",
-    layout="wide"
-)
-
-# Set tema seaborn
-sns.set_theme(style="whitegrid")
-
-# Memuat data yang sudah dibersihkan (main_data.csv)
-@st.cache_data
-def load_data():
-    # Mengambil main_data.csv (Bisa path lokal "dashboard/main_data.csv" atau URL raw GitHub)
-    url = "[https://raw.githubusercontent.com/nurafitriyana/proyek-analisis-data/main/dashboard/main_data.csv](https://raw.githubusercontent.com/nurafitriyana/proyek-analisis-data/main/dashboard/main_data.csv)"
+    # URL data yang sudah dibersihkan di repositori GitHub
+    url = "https://raw.githubusercontent.com/nurafitriyana/proyek-analisis-data/main/dashboard/main_data.csv"
     df = pd.read_csv(url)
     
     # Memastikan kolom datetime berformat datetime64
@@ -105,7 +39,7 @@ date_range = st.sidebar.date_input(
     value=[min_date, max_date]
 )
 
-# --- PENANGANAN ERROR UNPACKING TANGGAL ---
+# Penanganan unpacking tuple tanggal agar tidak error saat memilih 1 tanggal
 if len(date_range) == 2:
     start_date, end_date = date_range
 elif len(date_range) == 1:
@@ -204,7 +138,7 @@ if not filtered_df.empty:
 
     with st.expander("💡 Insight Pola Diurnal"):
         st.write(
-            "Paparan polusi terendah terjadi di siang-sore hari (13.00–16.00) karena bantuan dispersi konveksi udara hangat. "
+            "Paparan polusi terendah terjadi di siang-sore hari (13.00–16.00) karena dispersi konveksi udara hangat. "
             "Sebaliknya, akumulasi polutan meningkat tajam pada malam hari hingga tengah malam (21.00–02.00)."
         )
 

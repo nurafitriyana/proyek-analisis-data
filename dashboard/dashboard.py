@@ -28,12 +28,18 @@ st.sidebar.header("Filter Data")
 min_date = df['datetime'].dt.date.min()
 max_date = df['datetime'].dt.date.max()
 
-start_date, end_date = st.sidebar.date_input(
+date_range = st.sidebar.date_input(
     "Pilih Rentang Tanggal",
     value=[min_date, max_date],
     min_value=min_date,
     max_value=max_date
 )
+
+# Penanganan jika user baru memilih 1 tanggal
+if isinstance(date_range, (list, tuple)) and len(date_range) == 2:
+    start_date, end_date = date_range
+else:
+    start_date = end_date = date_range[0] if isinstance(date_range, (list, tuple)) else date_range
 
 # Filter Dataframe
 filtered_df = df[(df['datetime'].dt.date >= start_date) & (df['datetime'].dt.date <= end_date)]
@@ -95,7 +101,6 @@ with tab2:
         
         # 1. Bar Chart Kecepatan Angin vs PM10
         with col1:
-            st.subplots_adjust(wspace=0.3)
             wspm_summary = filtered_df.groupby('WSPM_category', observed=False)['PM10'].mean().reset_index()
             
             fig1, ax1 = plt.subplots(figsize=(6, 4))
@@ -108,6 +113,8 @@ with tab2:
             for p in ax1.patches:
                 ax1.annotate(f"{p.get_height():.2f}", (p.get_x() + p.get_width() / 2., p.get_height()),
                              ha='center', va='center', xytext=(0, 5), textcoords='offset points')
+            
+            fig1.tight_layout()
             st.pyplot(fig1)
             
             # Nilai dinamis
@@ -134,6 +141,8 @@ with tab2:
             ax2.set_ylabel("Rata-rata PM2.5 (µg/m³)")
             ax2.set_xticks(range(0, 24, 2))
             ax2.set_ylim(bottom=0) # Sumbu Y WAJIB dimulai dari Nol
+            
+            fig2.tight_layout()
             st.pyplot(fig2)
             
             st.write(f"""
